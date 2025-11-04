@@ -1,4 +1,4 @@
-/* app.js final: +Foto Guardia +Comentarios +Opcion Notificar +Historial Cards +COMPRESION + TOAST + RESPALDO + ZXING / BarcodeDetector + QR (Modo "Scan-All") + FIX LOGIN HASH + FIX BUGS + PWA + FIX SHARE ANDROID v6 (Banner) */
+/* app.js final: +Foto Guardia +Comentarios +Opcion Notificar +Historial Cards +COMPRESION + TOAST + RESPALDO + ZXING / BarcodeDetector + QR (Modo "Scan-All") + FIX LOGIN HASH + FIX BUGS + PWA + FIX SHARE ANDROID v6 (Banner) + FIX TYPO */
 (async function(){
   
   // --- INICIO REGISTRO PWA SERVICE WORKER ---
@@ -455,7 +455,7 @@
         return true;
       }).sort((a,b)=>b.created - a.created);
       historialPaquetes.innerHTML = '';
-      const fallbackGuardiaImg = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTIyIDlpLTJ2MGE1IDUgMCAwIDAtNy4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC43Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC43Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4zOCAxbDIuMjQgNy55M0gxMWExIDEgMCAwIDAtMS0xVjdoMVoiLz48L3N2Zz4=';
+      const fallbackGuardiaImg = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTIyIDlpLTJ2MGE1IDUgMCAwIDAtNy4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC47Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC43Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4zOCAxbDIuMjQgNy55M0gxMWExIDEgMCAwIDAtMS0xVjdoMVoiLz48L3N2Zz4=';
       rows.forEach(p=>{
         const card = document.createElement('div'); card.className = `historial-card estado-${p.estado || 'na'}`;
         let thumbsHTML = '';
@@ -509,7 +509,7 @@
       }
     });
 
-    // --- Lógica de entrega múltiple (sin cambios) ---
+    // --- Lógica de entrega múltiple (CON TYPO CORREGIDO) ---
     const handleDomicilioInput = async () => {
       const dom = domicilioInput.value.trim();
       const domLower = dom.toLowerCase();
@@ -530,7 +530,10 @@
       if (paquetesParaEntregar.length > 0) {
         currentBatchToDeliver = paquetesParaEntregar;
         const primerDomicilio = paquetesParaEntregar[0].domicilio;
-        const paquetesDelMismoDomicilio = paquetesParaEntregar.filter(p => p.domicilio === primer domicilio);
+        
+        // ★★★ AQUÍ ESTABA EL ERROR ★★★
+        // Cambiado de 'primer domicilio' a 'primerDomicilio'
+        const paquetesDelMismoDomicilio = paquetesParaEntregar.filter(p => p.domicilio === primerDomicilio); 
         
         domicilioVariosTxt.textContent = primerDomicilio; 
         
@@ -599,7 +602,6 @@
           const bannerFile = dataURLtoFile(bannerDataURL, 'notificacion.png');
 
           // 3. Crear el array de archivos (Banner PRIMERO, luego Foto)
-          // Esto es para que WhatsApp muestre el banner como la imagen "principal"
           const files = [];
           if (bannerFile) {
             files.push(bannerFile); // Archivo 1 (Banner)
