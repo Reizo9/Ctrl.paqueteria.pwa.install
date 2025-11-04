@@ -1,4 +1,4 @@
-/* app.js final: +Foto Guardia +Comentarios +Opcion Notificar +Historial Cards +COMPRESION + TOAST + RESPALDO + ZXING / BarcodeDetector + QR (Modo "Scan-All") + FIX LOGIN HASH + FIX BUGS + PWA + FIX SHARE ANDROID v6 (Banner) + FIX TYPO */
+/* app.js final: +Foto Guardia +Comentarios +Opcion Notificar +Historial Cards +COMPRESION + TOAST + RESPALDO + ZXING / BarcodeDetector + QR (Modo "Scan-All") + FIX LOGIN HASH + FIX BUGS + PWA + FIX SHARE ANDROID v7 (Quitar Title) */
 (async function(){
   
   // --- INICIO REGISTRO PWA SERVICE WORKER ---
@@ -32,7 +32,6 @@
       
       const width = 600;
       const height = 120;
-      // Usar ratio 1 para que el archivo sea más ligero, no necesitamos alta res para esto
       const ratio = 1; 
       
       canvas.width = width * ratio;
@@ -455,7 +454,7 @@
         return true;
       }).sort((a,b)=>b.created - a.created);
       historialPaquetes.innerHTML = '';
-      const fallbackGuardiaImg = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTIyIDlpLTJ2MGE1IDUgMCAwIDAtNy4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC47Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC43Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4zOCAxbDIuMjQgNy55M0gxMWExIDEgMCAwIDAtMS0xVjdoMVoiLz48L3N2Zz4=';
+      const fallbackGuardiaImg = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTIyIDlpLTJ2MGE1IDUgMCAwIDAtNy4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC43Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC43Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4zOCAxbDIuMjQgNy55M0gxMWExIDEgMCAwIDAtMS0xVjdoMVoiLz48L3N2Zz4=';
       rows.forEach(p=>{
         const card = document.createElement('div'); card.className = `historial-card estado-${p.estado || 'na'}`;
         let thumbsHTML = '';
@@ -509,7 +508,7 @@
       }
     });
 
-    // --- Lógica de entrega múltiple (CON TYPO CORREGIDO) ---
+    // --- Lógica de entrega múltiple (sin cambios) ---
     const handleDomicilioInput = async () => {
       const dom = domicilioInput.value.trim();
       const domLower = dom.toLowerCase();
@@ -530,10 +529,7 @@
       if (paquetesParaEntregar.length > 0) {
         currentBatchToDeliver = paquetesParaEntregar;
         const primerDomicilio = paquetesParaEntregar[0].domicilio;
-        
-        // ★★★ AQUÍ ESTABA EL ERROR ★★★
-        // Cambiado de 'primer domicilio' a 'primerDomicilio'
-        const paquetesDelMismoDomicilio = paquetesParaEntregar.filter(p => p.domicilio === primerDomicilio); 
+        const paquetesDelMismoDomicilio = paquetesParaEntregar.filter(p => p.domicilio === primerDomicilio);
         
         domicilioVariosTxt.textContent = primerDomicilio; 
         
@@ -563,7 +559,7 @@
       }
     });
 
-    // --- RECIBIR PAQUETE (CON CORRECCIÓN DE SHARE API v6 - BANNER) ---
+    // --- RECIBIR PAQUETE (CON CORRECCIÓN DE SHARE API v7 - Quitar Title) ---
     recibirBtn.addEventListener('click', async ()=>{
       clearMessage();
       const guia = guiaEl.value.trim();
@@ -592,29 +588,24 @@
           const comentariosMsg = comentarios ? `\nComentarios: ${comentarios}` : '';
           const msg = `📦 *PAQUETE EN CASETA* 📦\nHola ${nombreRes}, se ha recibido 1 paquete para su domicilio.\n\n${domInfoMsg}\n${paqInfo}${comentariosMsg}\n\nRecibido por: ${user.nombre}.`;
 
-          // --- INICIO CORRECCIÓN ANDROID SHARE (v6 - Banner) ---
+          // --- INICIO CORRECCIÓN ANDROID SHARE (v7 - Quitar Title) ---
           
-          // 1. Convertir la foto real del paquete
           const fotoFile = dataURLtoFile(fotoDataURL, `paquete_${guia}.png`);
-          
-          // 2. Crear el banner "Paquete en Caseta"
           const bannerDataURL = await createBannerImage('✅ Paquete en Caseta ✅');
           const bannerFile = dataURLtoFile(bannerDataURL, 'notificacion.png');
 
-          // 3. Crear el array de archivos (Banner PRIMERO, luego Foto)
           const files = [];
-          if (bannerFile) {
-            files.push(bannerFile); // Archivo 1 (Banner)
-          }
-          if (fotoFile) {
-            files.push(fotoFile); // Archivo 2 (Real)
-          }
+          if (bannerFile) { files.push(bannerFile); }
+          if (fotoFile) { files.push(fotoFile); }
           
-          const shareDataWithFiles = { title: 'Paquete Recibido', text: msg, files: files };
-          const shareDataTextOnly = { title: 'Paquete Recibido', text: msg };
+          // ★★★ LA CORRECCIÓN ESTÁ AQUÍ ★★★
+          // Se eliminó la propiedad "title" de ambos objetos
+          const shareDataWithFiles = { text: msg, files: files };
+          const shareDataTextOnly = { text: msg };
+          // ★★★ FIN DE LA CORRECCIÓN ★★★
+
           let canShareFiles = false;
 
-          // Verificar si podemos compartir los 2 archivos
           if (navigator.canShare && files.length > 1) { 
             try {
               if (navigator.canShare(shareDataWithFiles)) {
@@ -627,7 +618,6 @@
           }
 
           if (canShareFiles) {
-            // Intento 1: Compartir Texto + 2 Imágenes (Ideal)
             try { 
               await navigator.share(shareDataWithFiles); 
               notified = true; 
@@ -645,7 +635,6 @@
             }
           } 
           else if (navigator.canShare && navigator.canShare(shareDataTextOnly)) {
-             // Intento 2: Compartir Solo Texto (Fallback si no soporta archivos)
              console.warn("No se pueden compartir archivos, compartiendo solo texto.");
              try {
                 await navigator.share(shareDataTextOnly);
@@ -659,13 +648,12 @@
              }
           }
           else if (domInfo && domInfo.telefono) { 
-            // Intento 3: Fallback final si Web Share no está
             console.log("Web Share API no soportada, usando fallback de WA."); 
             const url = `https://wa.me/${domInfo.telefono}?text=${encodeURIComponent(msg)}`; 
             window.open(url, '_blank'); 
             notified = true; 
           }
-          // --- FIN CORRECCIÓN ANDROID SHARE (v6 - Banner) ---
+          // --- FIN CORRECCIÓN ANDROID SHARE (v7) ---
         } 
         if(notified) { showMessage(p ? 'Paquete actualizado (Abriendo app...)' : 'Paquete registrado (Abriendo app...)', 'success', 4000); } 
         else { showMessage(p ? 'Paquete actualizado' : 'Paquete registrado', 'success'); }
@@ -675,7 +663,7 @@
       }catch(err){ const errorMsg = (err.name === 'ConstraintError' || (err.message && err.message.includes('key'))) ? 'Error: Guía duplicada.' : 'Error al guardar.'; showMessage(errorMsg, 'error'); console.error(err); }
     });
 
-    // --- FLUJO DE ENTREGA (MEJORADO CON FALLBACKS) ---
+    // --- FLUJO DE ENTREGA (sin cambios) ---
     entregarBtn.addEventListener('click', async ()=>{
       clearMessage(); currentBatchToDeliver = []; 
       const guia = guiaEl.value.trim();
@@ -698,8 +686,7 @@
       idPreview.innerHTML = ''; idFotoInput.value = ''; notificarEntregaSi.checked = true; clearCanvas();
     });
 
-    // --- MODAL DE FIRMA (MEJORADO CON FALLBACKS) ---
-    // (Esta función ya funciona bien, porque SIEMPRE tiene 2 archivos: firma + ID)
+    // --- MODAL DE FIRMA (CON CORRECCIÓN DE SHARE API v7 - Quitar Title) ---
     cerrarFirma.addEventListener('click', () => { firmaModal.classList.add('hidden'); currentBatchToDeliver = []; });
     guardarFirma.addEventListener('click', async ()=>{
       const idFotoFile = idFotoInput.files[0]; const idFotoPreviewSrc = idPreview.querySelector('img') ? idPreview.querySelector('img').src : null;
@@ -721,7 +708,7 @@
           if (dom) { const doms = await getAll('domicilios'); domInfo = doms.find(d => d.calle === dom); }
           const comentariosMsg = comentarios ? `\nComentarios: ${comentarios}` : '';
           msg = `✅ *PAQUETES ENTREGADOS* ✅\nHola residente del ${dom}, se han entregado ${currentBatchToDeliver.length} paquetes en su domicilio.${comentariosMsg}\n\nEntregado por: ${user.nombre}.`;
-          shareTitle = "Paquetes Entregados";
+          shareTitle = "Paquetes Entregados"; // Esta variable ya no se usa para 'share', pero se mantiene por si acaso
         } catch (err) { showMessage('Error al guardar entrega múltiple', 'error'); console.error(err); return; }
         currentBatchToDeliver = []; 
       } else {
@@ -737,7 +724,7 @@
           if (dom) { const doms = await getAll('domicilios'); domInfo = doms.find(d => d.calle === dom); }
           const comentariosMsg = comentarios ? `\nComentarios: ${comentarios}` : '';
           msg = `✅ *PAQUETE ENTREGADO* ✅\nHola ${p.nombre}, se ha entregado su paquete (Guía: ${p.guia}).${comentariosMsg}\n\nEntregado por: ${user.nombre}.`;
-          shareTitle = "Paquete Entregado";
+          shareTitle = "Paquete Entregado"; // Esta variable ya no se usa para 'share'
         } catch (err) { showMessage('Error al guardar la entrega', 'error'); console.error(err); return; }
       }
       if (notificarEntregaSi.checked) {
@@ -746,8 +733,12 @@
         if (firmaFile) files.push(firmaFile); 
         if (idFile) files.push(idFile);
         
-        const shareDataWithFiles = { title: shareTitle, text: msg, files: files };
-        const shareDataTextOnly = { title: shareTitle, text: msg };
+        // ★★★ LA CORRECCIÓN ESTÁ AQUÍ ★★★
+        // Se eliminó la propiedad "title" de ambos objetos
+        const shareDataWithFiles = { text: msg, files: files };
+        const shareDataTextOnly = { text: msg };
+        // ★★★ FIN DE LA CORRECCIÓN ★★★
+
         let canShareFiles = false;
 
         if (navigator.canShare && files.length > 1) { 
@@ -1044,7 +1035,7 @@
       if (users.length === 0) { tablaUsuarios.innerHTML = '<p class="muted">No hay usuarios registrados.</p>'; return; }
       users.forEach(u => {
         const row = document.createElement('div'); row.className = 'row';
-        row.innerHTML = `<div class="info" style="display: flex; align-items: center; gap: 10px;"><img src="${u.foto || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTIyIDlpLTJ2MGE1IDUgMCAwIDAtNy4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC43Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4zOCAxbDIuMjQgNy55M0gxMWExIDEgMCAwIDAtMS0xVjdoMVoiLz48L3N2Zz4='}" class="guardia-thumb"><div><strong>${u.nombre}</strong><div class="muted">Usuario: ${u.usuario} | Rol: ${u.rol || 'guardia'}</div></div></div><div>${u.id === user.id ? '<span class="muted">(Tú)</span>' : `<button class="btn danger-ghost" data-id="${u.id}" data-act="delete_user">Eliminar</button>`}</div>`;
+        row.innerHTML = `<div class="info" style="display: flex; align-items: center; gap: 10px;"><img src="${u.foto || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjUiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTIyIDlpLTJ2MGE1IDUgMCAwIDAtNy4xNi00LjcyTDEyIDEwLjA5TDExLjE2IDQuMjdBNCA0IDAgMCAwIDggNUg1YTMgMyAwIDAgMC0zIDN2MWEzIDMgMCAwIDAgMyAzSDh2N0g2djJoMTJ2LTJoLTJ2LTd6TTkgN2EyIDIgMCAwIDEgMiAyaC43Nkw5LjM4IDdoLjI5em0yIDVWNC4wN2E0IDQgMCAwIDEgMS4zOCAxbDIuMjQgNy55M0gxMWExIDEgMCAwIDAtMS0xVjdoMVoiLz48L3N2Zz4='}" class="guardia-thumb"><div><strong>${u.nombre}</strong><div class="muted">Usuario: ${u.usuario} | Rol: ${u.rol || 'guardia'}</div></div></div><div>${u.id === user.id ? '<span class="muted">(Tú)</span>' : `<button class="btn danger-ghost" data-id="${u.id}" data-act="delete_user">Eliminar</button>`}</div>`;
         tablaUsuarios.appendChild(row);
       });
     }
